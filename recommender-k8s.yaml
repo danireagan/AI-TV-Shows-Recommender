@@ -17,7 +17,7 @@ spec:
       containers:
       - name: recommender-container
         image: recommender-app:latest
-        imagePullPolicy: ifNotPresent
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8501
         envFrom:
