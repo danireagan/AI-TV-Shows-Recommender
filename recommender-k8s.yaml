@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommender-app
+  labels:
+    app: recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommender
+  template:
+    metadata:
+      labels:
+        app: recommender
+    spec:
+      containers:
+      - name: recommender-container
+        image: recommender-app:latest
+        imagePullPolicy: ifNotPresent
+        ports:
+        - containerPort: 8501
+        envFrom:
+          -secretRef:
+             name: recommender-secrets
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommender-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: recommender
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
